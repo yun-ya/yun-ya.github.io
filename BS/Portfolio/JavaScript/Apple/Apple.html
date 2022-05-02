@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://kit.fontawesome.com/0cd05a5fa8.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .buttongroup {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        .btn {
+            font-size: 20px;
+        }
+
+        img {
+            color: rgb(238, 166, 157);
+        }
+
+        div {
+            margin-top: 10px;
+        }
+
+        i {
+            border: 1px solid black;
+            border-radius: 100%;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="buttongroup">
+        <button id="iphone" class="btn btn-light btn-outline-info">IPhone</button>
+        <button id="ipad" class="btn btn-light btn-outline-info">IPad</button>
+        <button id="mac" class="btn btn-light btn-outline-info">MacPro</button>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-6">
+                <img id="productimg" src="" alt="" class="img-fluid">
+            </div>
+            <div class="col-12 col-md-6">
+                <div id="size" class="row"></div>
+                <div id="color" class="row" style="box-sizing: border-box;"></div>
+                <div id="stronge" class="row"></div>
+                <div id="network" class="row"></div>
+                <div id="price"></div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        var products = {
+            iphone: {
+                all: {
+                    baseimg: 'apple/iphone-all.png'
+                },
+                outward: [
+                    { color: '紅色', colorvalue: 'rgb(255, 0, 0)', colorimg: 'img/iphone-red.png' },
+                    { color: '綠色', colorvalue: 'rgb(101, 236, 191)', colorimg: 'img/iphone-green.png' },
+                    { color: '黑色', colorvalue: 'rgb(0, 0, 0)', colorimg: 'img/iphone-black.png' },
+                    { color: '白色', colorvalue: 'rgb(250, 250, 250)', colorimg: 'img/iphone-white.png' },
+                    { color: '黃色', colorvalue: 'rgb(236, 231, 154)', colorimg: 'img/iphone-yellow.png' },
+                    { color: '紫色', colorvalue: 'rgb(196, 146, 224)', colorimg: 'img/iphone-purple.png' }
+                ],
+                stronge: [
+                    { memory: '64GB', price: 'NT$24,900' },
+                    { memory: '128GB', price: 'NT$26,900' },
+                    { memory: '256GB', price: 'NT$30,400' }
+                ]
+            },
+            ipad: {
+                all: {
+                    baseimg: 'apple/ipad-all.png'
+                },
+                outward: [
+                    { color: '金色', colorvalue: 'rgb(238, 166, 157)', colorimg: 'img/ipad-gold.png' },
+                    { color: '銀色', colorvalue: 'silver', colorimg: 'img/ipad-silver.png' },
+                    { color: '太空灰色', colorvalue: 'gray', colorimg: 'img/ipad-space.png' }
+                ],
+                stronge: [
+                    { memory: '32GB', price: 'NT$10,900起' },
+                    { memory: '128GB', price: 'NT$13,900起' },
+                ],
+                ipad32: [
+                    { network: 'Wi-Fi', price: 'NT$10,900' },
+                    { network: 'Wi-Fi + 行動網路 ', price: 'NT$15,400' }
+                ],
+                ipad128: [
+                    { network: 'Wi-Fi', price: 'NT$13,900' },
+                    { network: 'Wi-Fi + 行動網路 ', price: 'NT$18,400' }
+                ]
+            },
+            mac: {
+                all: {
+                    baseimg: 'apple/mac-all.png'
+                },
+                screen: [
+                    { size: '13吋' },
+                    { size: '16吋' }
+
+                ],
+                mac13: {
+                    outward: [
+                        { size: '13吋', color: '銀色', colorvalue: 'silver', colorimg: 'img/mac13-silver.png' },
+                        { size: '13吋', color: '太空灰色', colorvalue: 'gray', colorimg: 'img/mac13-space.png' },
+                    ],
+                    stronge: [
+                        { memory: '256GB', price: 'NT$41,900' },
+                        { memory: '512GB', price: 'NT$47,900' },
+                    ]
+                },
+                mac16: {
+                    outward: [
+                        { size: '16吋', color: '銀色', colorvalue: 'silver', colorimg: 'img/mac16-silver.png' },
+                        { size: '16吋', color: '太空灰色', colorvalue: 'gray', colorimg: 'img/mac16-space.png' }
+                    ],
+                    stronge: [
+                        { memory: '512GB', price: 'NT$77,900' },
+                        { memory: '1TB', price: 'NT$89,900' }
+                    ]
+                },
+
+            }
+        };
+
+        var iphoneproduct = products.iphone;
+        var ipadproduct = products.ipad;
+        var macproduct = products.mac;
+        var ipadbtn = '';
+        var macbtn = '';
+
+        var iphonebtn = document.getElementById('iphone');
+        var ipadbtn = document.getElementById('ipad');
+        var macbtn = document.getElementById('mac');
+
+        var img = document.getElementById('productimg')
+        var colorArea = document.getElementById('color');
+        var sizeArea = document.getElementById('size');
+        var strongeArea = document.getElementById('stronge');
+        var networkArea = document.getElementById('network');
+        var priceArea = document.getElementById('price');
+
+        iphonebtn.onclick = function () {
+            clearHTML();
+            img.setAttribute('src', iphoneproduct.all.baseimg);
+            createcolor(iphoneproduct);
+        }
+        ipadbtn.onclick = function () {
+            clearHTML();
+            img.setAttribute('src', ipadproduct.all.baseimg);
+            createcolor(ipadproduct);
+        }
+        macbtn.onclick = function () {
+            clearHTML();
+            img.setAttribute('src', macproduct.all.baseimg);
+            createsize(macproduct);
+        }
+        function clearHTML() {
+            colorArea.innerHTML = '';
+            strongeArea.innerHTML = '';
+            sizeArea.innerHTML = '';
+            networkArea.innerHTML = '';
+            priceArea.innerHTML = '';
+        }
+        function createcolor(product) {
+            colorArea.innerHTML = '';
+            let colortitle = document.createElement('div');
+            let colorh2 = document.createElement('h2');
+
+            colorh2.innerText = '顏色';
+            colortitle.classList.add('w-100');
+            colortitle.classList.add('d-flex');
+            colortitle.classList.add('justify-content-center');
+            colortitle.classList.add('justify-content-md-start');
+            colortitle.appendChild(colorh2);
+            colorArea.appendChild(colortitle);
+
+            product.outward.forEach(item => {
+                let div = document.createElement('div');//分配按鈕欄位
+                let colorbtn = document.createElement('button');//按鈕
+                let colordiv = document.createElement('div');//i的div
+                let i = document.createElement('i');
+                let span = document.createElement('span');
+                div.classList.add('col-6');
+                div.classList.add('col-md-4');
+                colorbtn.classList.add('btn');
+                colorbtn.classList.add('w-100')
+                colorbtn.classList.add('btn-outline-dark');
+
+                colordiv.classList.add('d-flex');
+                colordiv.classList.add('justify-content-center');
+                colordiv.classList.add('align-items-center')
+                colordiv.classList.add('flex-column');
+                colordiv.classList.add('p-2')//padding-20
+
+                i.classList.add('fas', 'fa-circle');
+                i.classList.add('display-4');
+                i.style.color = item.colorvalue;
+                span.innerText = item.color;
+
+                colordiv.appendChild(i);
+                colordiv.appendChild(span);
+
+                colorbtn.appendChild(colordiv);
+                div.appendChild(colorbtn);
+                colorbtn.addEventListener('click', function () {
+                    // console.log(this);
+                    img.setAttribute('src', item.colorimg);
+                    createstronge(product);
+                })
+
+                colorArea.appendChild(div)
+
+            });
+
+        }
+
+        function createstronge(product) {
+            strongeArea.innerHTML = '';
+            let strongetitle = document.createElement('div');
+            let strongeh2 = document.createElement('h2');
+            strongeh2.innerText = '記憶體';
+            strongetitle.classList.add('w-100');
+            strongetitle.classList.add('d-flex');
+            strongetitle.classList.add('justify-content-center');
+            strongetitle.classList.add('justify-content-md-start');
+            strongetitle.appendChild(strongeh2);
+            strongeArea.appendChild(strongetitle);
+
+            product.stronge.forEach(item => {
+                let div = document.createElement('div');//分配按鈕欄位
+                let strongebtn = document.createElement('button');//按鈕
+                let strongediv = document.createElement('div');//i的div
+                let h3 = document.createElement('h3');
+                let span = document.createElement('span');
+
+                div.classList.add('col-6');
+                div.classList.add('col-md-4');
+                strongebtn.classList.add('strongebtn');
+                strongebtn.classList.add('btn');
+                strongebtn.classList.add('w-100');
+                strongebtn.classList.add('btn-outline-dark');
+
+                strongediv.classList.add('d-flex');
+                strongediv.classList.add('justify-content-center');
+                strongediv.classList.add('align-items-center')
+                strongediv.classList.add('flex-column');
+                strongediv.classList.add('p-2')//padding-20
+
+                h3.innerText = item.memory;
+
+                span.innerText = item.price;
+                strongediv.appendChild(h3);
+                strongediv.appendChild(span);
+                strongebtn.appendChild(strongediv);
+                div.appendChild(strongebtn)
+                strongeArea.appendChild(div);
+                strongebtn.addEventListener('click', function () {
+                    if (product == iphoneproduct) {
+                        createprice(product);
+                        console.log(this);
+                        let priceh3 = document.createElement('h3');
+                        priceh3.innerText = item.price;
+                        priceArea.appendChild(priceh3);
+                    }
+                    if (product == ipadproduct) {
+                        if (h3.textContent == "32GB") {
+                            ipadbtn = product.ipad32;
+                        }
+                        else {
+                            ipadbtn = product.ipad128;
+                        }
+                        createnetwork(product);
+                        createprice(product);
+                        console.log(this);
+                        let priceh3 = document.createElement('h3');
+                        priceh3.innerText = item.price;
+                        priceArea.appendChild(priceh3);
+                    }
+                    if (product == macproduct.mac13) {
+                        createprice(product);
+                        console.log(this);
+                        let priceh3 = document.createElement('h3');
+                        priceh3.innerText = item.price;
+                        priceArea.appendChild(priceh3);
+                    }
+                    if (product == macproduct.mac16) {
+                        createprice(product);
+                        console.log(this);
+                        let priceh3 = document.createElement('h3');
+                        priceh3.innerText = item.price;
+                        priceArea.appendChild(priceh3);
+                    }
+                })
+            })
+        }
+
+        function createsize(product) {
+            sizeArea.innerHTML = '';
+            let sizetitle = document.createElement('div');
+            let sizeh2 = document.createElement('h2');
+            sizeh2.innerText = '螢幕尺寸';
+            sizetitle.classList.add('w-100');
+            sizetitle.classList.add('d-flex');
+            sizetitle.classList.add('justify-content-center');
+            sizetitle.classList.add('justify-content-md-start');
+            sizetitle.appendChild(sizeh2);
+            sizeArea.appendChild(sizetitle);
+
+            product.screen.forEach(item => {
+                let div = document.createElement('div');//分配按鈕欄位
+                let sizebtn = document.createElement('button');//按鈕
+                let sizediv = document.createElement('div');//i的div
+                let h3 = document.createElement('h3');
+
+                div.classList.add('col-6');
+                div.classList.add('col-md-4');
+                sizebtn.classList.add('sizebtn');
+                sizebtn.classList.add('btn');
+                sizebtn.classList.add('w-100');
+                sizebtn.classList.add('h-100');
+                sizebtn.classList.add('btn-outline-dark');
+
+                sizediv.classList.add('d-flex');
+                sizediv.classList.add('justify-content-center');
+                sizediv.classList.add('align-items-center')
+                sizediv.classList.add('flex-column');
+                sizediv.classList.add('p-2')//padding-20
+
+                h3.innerText = item.size;
+                sizediv.appendChild(h3);
+                sizebtn.appendChild(sizediv);
+                div.appendChild(sizebtn)
+                sizeArea.appendChild(div);
+
+                sizebtn.addEventListener('click', function () {
+
+                    if (h3.textContent == '13吋') {
+                        strongeArea.innerHTML = '';
+                        priceArea.innerHTML = '';
+                        console.log(h3.textContent)
+                        createcolor(product.mac13)
+
+                    }
+                    else if (h3.textContent == '16吋') {
+                        console.log(h3.textContent)
+                        strongeArea.innerHTML = '';
+                        priceArea.innerHTML = '';
+                        createcolor(product.mac16)
+                    }
+                })
+
+            })
+
+
+        }
+
+        function createnetwork(product) {
+            networkArea.innerHTML = '';
+            let networktitle = document.createElement('div');
+            let networkh2 = document.createElement('h2');
+
+            networkh2.innerText = '連線能力';
+            networktitle.classList.add('w-100');
+            networktitle.classList.add('d-flex');
+            networktitle.classList.add('justify-content-center');
+            networktitle.classList.add('justify-content-md-start');
+            networktitle.appendChild(networkh2);
+            networkArea.appendChild(networktitle);
+
+            let btn = document.getElementsByClassName("strongebtn");
+
+            // var text = document.querySelector(".")
+
+            ipadbtn.forEach(item => {
+                let div = document.createElement('div');//分配按鈕欄位
+                let networkbtn = document.createElement('button');//按鈕
+                let networkdiv = document.createElement('div');//i的div
+                let h3 = document.createElement('h3');
+                let span = document.createElement('span');
+                div.classList.add('col-6');
+                div.classList.add('col-md-4');
+                networkbtn.classList.add('networkbtn');
+                networkbtn.classList.add('btn');
+                networkbtn.classList.add('w-100');
+                networkbtn.classList.add('h-100');
+                networkbtn.classList.add('btn-outline-dark');
+
+                networkdiv.classList.add('d-flex');
+                networkdiv.classList.add('justify-content-center');
+                networkdiv.classList.add('align-items-center')
+                networkdiv.classList.add('flex-column');
+                networkdiv.classList.add('p-2')//padding-20
+
+                h3.innerText = item.network;
+                span.innerText = item.price;
+                networkdiv.appendChild(h3);
+                networkdiv.appendChild(span);
+                networkbtn.appendChild(networkdiv);
+                div.appendChild(networkbtn)
+                networkArea.appendChild(div);
+                networkbtn.addEventListener('click', function () {
+                    createprice(product);
+                    console.log(this);
+                    let priceh3 = document.createElement('h3');
+                    priceh3.innerText = item.price;
+                    priceArea.appendChild(priceh3);
+                })
+            })
+
+
+        }
+
+        function createprice(product) {
+            priceArea.innerHTML = '';
+            let pricetitle = document.createElement('div');
+            let priceh2 = document.createElement('h2');
+            let priceh3 = document.createElement('h3');
+            priceh2.innerText = '價格';
+
+            pricetitle.classList.add('w-100');
+            pricetitle.classList.add('d-flex');
+            pricetitle.classList.add('justify-content-center');
+            pricetitle.classList.add('justify-content-md-start');
+
+            pricetitle.appendChild(priceh2);
+            priceArea.appendChild(pricetitle);
+
+        }
+    </script>
+</body>
+
+</html>
