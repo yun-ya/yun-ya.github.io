@@ -1,0 +1,52 @@
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  #data {
+    width: 98%;
+    margin: auto;
+
+  }
+
+  .card {
+    width: 25%;
+    position: relative;
+    box-sizing: border-box;
+    /* margin: 5px; */
+    padding: 0;
+  }
+
+  .card-body {
+    background-color: rgb(19, 60, 78);
+    position: absolute;
+    bottom: 0;
+    left: 0px;
+    right: 0px;
+    height: 20%;
+
+  }
+
+  .card img {
+    width: 100%;
+  }
+
+  .card-title {
+    color: black;
+    /* text-align: center; */
+    line-height: 50px;
+    font-weight: 800;
+    font-style: italic;
+    font-size: 35px;
+    color: azure;
+  }
+ 
+  .card:hover  .card-body{
+    text-align: center;
+    background-color: rgb(49, 113, 141);
+  }
+  P{
+    text-transform: uppercase;
+  }
+  
