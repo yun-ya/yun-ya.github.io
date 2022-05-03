@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healtly Food</title>
+    <script src="https://kit.fontawesome.com/0cd05a5fa8.js" crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-family: Lato, sans-serif;
+            font-style: normal;
+        }
+
+        a {
+            color: black;
+        }
+
+        .fa {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+        }
+
+        .account-class {
+            background-color: white;
+            height: 77.8px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid rgb(173, 168, 168);
+        }
+
+        .cart-items {
+            display: inline-block;
+            background-color: yellow;
+            width: 20px;
+            height: 20px;
+            margin-top: -10px;
+            vertical-align: top;
+            text-align: center;
+            line-height: 24px;
+            border-radius: 50%;
+        }
+
+        .curency-active {
+            font-weight: bold;
+        }
+
+        .account {
+            margin: auto;
+        }
+
+        .screach {
+            display: flex;
+            padding: 20px;
+            margin-left: auto;
+        }
+
+        .curency-active::after {
+            content: "∨";
+            font-size: 20px;
+        }
+
+        .list-class {
+            position: sticky;
+            top: 0;
+            background-color: white;
+            align-items: center;
+            height: 195px;
+            display: flex;
+            z-index: 2;
+        }
+
+        .list-class .item {
+            margin: auto;
+        }
+
+        .item p {
+            letter-spacing: 5px;
+        }
+
+        .list-item {
+            text-align: center;
+            display: flex;
+            padding-right: 50px;
+        }
+
+        .list-item a:hover {
+            border-bottom: 4px solid black;
+
+        }
+
+        .list-item a {
+            text-decoration: none;
+            color: black;
+            margin: 10px;
+        }
+
+        .swiper {
+            display: flex;
+        }
+
+        .swiper .pic {
+            width: 59.97993981%;
+
+        }
+
+        .swiper .pic img {
+            width: 100%;
+        }
+
+        .swiper .txt {
+            width: 40.02006019%;
+            padding: 20px;
+            font: 80px Lato, sans-serif;
+            font-style: normal;
+            margin-top: auto;
+            margin-bottom: auto;
+        }
+
+        .swiper .txt h2 {
+            font-size: 100px;
+            line-height: 90px;
+            font-weight: 300;
+        }
+
+        .swiper .txt h3 {
+            color: yellow;
+            font-size: 65px;
+            line-height: 90px;
+            font-weight: 800;
+
+        }
+
+        .swiper .more a {
+            font-size: 18px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .swiper .more {
+            width: 120px;
+            height: 50px;
+            background-color: black;
+            text-decoration: none;
+            text-align: center;
+            line-height: 20px;
+            border: 1px solid #000;
+            border-radius: 5px;
+
+        }
+
+        .slider-border {
+            height: 70px;
+            margin-left: 9%;
+            box-shadow: -13px 15px 33px -18px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            width: 100%;
+            /* max-width: 1024px; */
+            margin: auto;
+            padding-top: 100px;
+        }
+
+        .row {
+            display: flex;
+            flex-wrap: wrap;
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+
+        div[class*='col-'] {
+            box-sizing: border-box;
+            margin-left: auto;
+            margin-right: auto;
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+
+        .col-1 {
+            width: 8.333333%;
+        }
+
+        .col-2 {
+            width: 16.333333%;
+        }
+
+        .col-3 {
+            width: 25%;
+        }
+
+        .col-4 {
+            width: 33.333333%;
+        }
+
+        .col-5 {
+            width: 41.666666%;
+        }
+
+        .col-6 {
+            width: 50%;
+        }
+
+        .col-7 {
+            width: 58.333333%;
+        }
+
+        .col-8 {
+            width: 66.666666%;
+        }
+
+        .col-9 {
+            width: 75%;
+        }
+
+        .col-10 {
+            width: 83.333333%;
+        }
+
+        .col-11 {
+            width: 91.666666%;
+        }
+
+        .col-12 {
+            width: 100%;
+        }
+
+        .row .item {
+            position: relative;
+            text-align: center;
+            margin: auto;
+        }
+
+        .row .item:hover h1 {
+            transform: .6s;
+            color: yellow;
+        }
+
+        .row .item:hover {
+            box-shadow: 0px 0px 20px 3px rgba(0, 0, 0, 0.2);
+            transform: .6s;
+        }
+
+        .row .item img {
+            width: 100%;
+        }
+
+        .row .item h1 {
+            font-size: 30px;
+            font-weight: bold;
+            position: absolute;
+            top: 150px;
+            left: 0;
+            right: 0;
+            color: black;
+        }
+
+        .shop {
+            display: flex;
+            justify-content: center;
+            padding-top: 75px;
+            color: white;
+        }
+
+        .shop img {
+            width: 100%;
+        }
+
+        .shop a {
+            color: white;
+            font-weight: 700;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 27px;
+            display: inline-block;
+        }
+
+        .shop a:hover {
+            color: black;
+        }
+
+        .shop .plate .pic {
+            padding-left: 25px;
+        }
+
+        .shop .plate .item:nth-child(2) .pic{
+            padding-top: 25px;
+        }
+
+        .shop .banner {
+            position: relative;
+        }
+
+        .shop .banner .txt h1 {
+            font-size: 30px;
+            font-weight: 800;
+        }
+
+        .banner .txt {
+            position: absolute;
+            bottom: 75px;
+            left: 50px;
+        }
+
+        .shop .plate {
+            position: relative;
+        }
+
+        .plate .txt h1 {
+            font-size: 35px;
+            font-weight: bold;
+        }
+
+       
+        .shop .plate .txt p {
+            font-size: 15px;
+            letter-spacing: normal; 
+        }
+
+
+        .plate .item:nth-child(1) .txt {
+            position: absolute;
+            top: 200px;
+            left: 50px;
+        }
+
+        .plate .item:nth-child(2) .txt {
+            position: absolute;
+            bottom: 100px;
+            left: 50px;
+        }
+
+        .item-group {
+            padding-top: 100px;
+            text-align: center;
+        }
+
+        .item-group h2 {
+            font-size: 24px;
+            font-weight: 800;
+            padding-bottom: 20px;
+        }
+
+        .item-group .contant {
+            display: flex;
+            justify-content: center;
+            padding: 30px;
+
+        }
+
+        .contant .txt {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+        }
+
+        .contant .btn {
+            display: flex;
+
+        }
+
+        .contant .txt a {
+            font-size: 15px;
+        }
+
+        .contant .txt p {
+            letter-spacing: unset;
+            font-size: 21px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+        }
+
+        .contant .txt span {
+            font-weight: 700;
+        }
+
+        .contant .txt .sale {
+            text-decoration: line-through;
+            margin-right: 5px;
+            color: #888;
+        }
+
+        .contant .btn .cart {
+            color: #000;
+            font-size: 12px;
+            display: block;
+            text-transform: uppercase;
+            font-weight: 800;
+            border: 1px solid #000;
+            border-radius: 5px;
+            width: 135px;
+            line-height: 40px;
+            text-align: center;
+            margin-right: 10px;
+        }
+
+        .contant .btn .cart:hover,
+        .contant .btn a:hover {
+            background-color: yellow;
+            cursor: pointer;
+        }
+
+        .contant .btn a {
+            border: 1px solid #000;
+            border-radius: 5px;
+            height: 40px;
+            display: block;
+            width: 40px;
+            line-height: 40px;
+            text-align: center;
+            font-size: 16px;
+            margin-right: 10px;
+            
+        }
+
+        .wrap {
+            padding-top: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .wrap .item-txt {
+            z-index: 1;
+            width: 500px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="account-class">
+        <div class="account">
+            <i class="fas fa-user"></i>My account
+        </div>
+        <div class="screach">
+            <i class="fab fa-sistrix"></i>
+            <i class="fas fa-heart"></i>
+            <i class="fas fa-shopping-cart">
+                <div class="cart-items">
+                    0
+                </div>
+            </i>
+            <div class="curency-active">
+                USD
+            </div>
+        </div>
+    </div>
+    <div class="list-class">
+        <div class="item">
+            <img src="heathfood/asset 1.png" alt="">
+            <p>HEALTHY FOOD</p>
+        </div>
+        <div class="list-item">
+            <li>
+                <a href="">HOME</a>
+            </li>
+            <li>
+                <a href="">ABOUT US</a>
+            </li>
+            <li>
+                <a href="">COLLECTIONS</a>
+            </li>
+            <li>
+                <a href="">BLOG</a>
+            </li>
+            <li>
+                <a href="">SALE</a>
+            </li>
+            <li>
+                <a href="">CONTACT US</a>
+            </li>
+        </div>
+
+    </div>
+    <div class="swiper">
+        <div class="pic">
+            <img src="heathfood/asset 14.png" alt="圖片說明">
+        </div>
+        <div class="txt">
+            <h2>Fresh and Delicious</h2>
+            <h3>ALL YEAR ROUND!</h3>
+            <div class="more">
+                <a href="">READ MORE</a>
+            </div>
+        </div>
+    </div>
+    <div class="slider-border"></div>
+    <div class="container">
+        <div class="row">
+            <div class="item col-2">
+                <a href="">
+                    <img src="heathfood/asset 50.png" alt="">
+                    <h1>Fresh Fruits</h1>
+                </a>
+            </div>
+            <div class="item col-2">
+                <a href="">
+                    <img src="heathfood/asset 51.png" alt="">
+                    <h1>Veggies</h1>
+                </a>
+            </div>
+            <div class="item col-2">
+                <a href="">
+                    <img src="heathfood/asset 52.png" alt="">
+                    <h1>Fish</h1>
+                </a>
+            </div>
+            <div class="item col-2">
+                <a href="">
+                    <img src="heathfood/asset 53.png" alt="">
+                    <h1>Nuts & Seeds</h1>
+                </a>
+            </div>
+            <div class="item col-2">
+                <a href="">
+                    <img src="heathfood/asset 54.png" alt="">
+                    <h1>Bread</h1>
+                </a>
+            </div>
+            <div class="item col-2">
+                <a href="">
+                    <img src="heathfood/asset 55.png" alt="">
+                    <h1>Dairy</h1>
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="shop">
+        <div class="banner">
+            <div class="item">
+                <div class="pic">
+                    <img src="heathfood/asset 56.png" alt="">
+                </div>
+                <div class="txt">
+                    <h1>Best Quality Products</h1>
+                    <a href="">Shop now</a>
+                </div>
+            </div>
+        </div>
+        <div class="plate">
+            <div class="item">
+                <div class="pic">
+                    <img src="heathfood/asset 57.png" alt="">
+                </div>
+                <div class="txt">
+                    <h1>Hot Deals:</h1>
+                    <h1>CRAZY PRICE $2.99</h1>
+                    <a href="">Shop now</a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic">
+                    <img src="heathfood/asset 58.png" alt="">
+                </div>
+                <div class="txt">
+                    <h1>HURRY UP!</h1>
+                    <p>Don't miss your chance to be the first!</p>
+                    <a href="">Shop now</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="item-group">
+        <h2>Featured Products</h2>
+        <div class="contant">
+            <div class="item">
+                <div class="pic">
+                    <img src="heathfood/asset 24.png" alt="">
+                </div>
+                <div class="txt">
+                    <a href="">P28 Foods Formulated...</a>
+                    <p>
+                        <span class="sale">$26.00</span>
+                        <span>$20.00</span></p>
+                </div>
+                <div class="btn">
+                    <button class="cart">
+                        <i class="fas fa-shopping-cart"></i>Add to cart
+                    </button>
+                    <a href=""><i class="fas fa-eye"></i></a>
+                    <a href=""><i class="fas fa-heart"></i></a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic">
+                    <img src="heathfood/asset 26.png" alt="">
+                </div>
+                <div class="txt">
+                    <a href="">P28 Foods Formulated...</a>
+                    <p>
+                        <span>$29.00 -</span>
+                        <span>$36.00</span>
+                    </p>
+                </div>
+                <div class="btn">
+                    <a class="cart">
+                        <i class="fas fa-shopping-cart"></i>Choose variant
+                    </a>
+                    <a href=""><i class="fas fa-eye"></i></a>
+                    <a href=""><i class="fas fa-heart"></i></a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic">
+                    <img src="heathfood/asset 28.png" alt="">
+                </div>
+                <div class="txt">
+                    <a href="">KIND Nuts & Spices, ...</a>
+                    <p>
+                        <span>$12.00 -</span>
+                        <span>$30.00</span></p>
+                </div>
+                <div class="btn">
+                    <a class="cart">
+                        <i class="fas fa-shopping-cart"></i>Choose variant
+                    </a>
+                    <a href=""><i class="fas fa-eye"></i></a>
+                    <a href=""><i class="fas fa-heart"></i></a>
+                </div>
+            </div>
+            <div class="item">
+                <div class="pic">
+                    <img src="heathfood/asset 30.png" alt="">
+                </div>
+                <div class="txt">
+                    <a href="">Justin's Nut Butter ...</a>
+                    <p>
+                        <span class="sale">$33.00</span>
+                        <span>$22.00</span></p>
+                </div>
+                <div class="btn">
+                    <button class="cart">
+                        <i class="fas fa-shopping-cart"></i>Add to cart
+                    </button>
+                    <a href=""><i class="fas fa-eye"></i></a>
+                    <a href=""><i class="fas fa-heart"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="wrap">
+        <div class="item-txt">
+            <h3>20% OFF</h3>
+            <h4>Fresh Berries</h4>
+            <a class="btn" href=""></a>
+        </div>
+        <div class="item-img">
+            <img src="heathfood/asset 40.png" alt="">
+        </div>
+    </div>
+
+</body>
+
+</html>

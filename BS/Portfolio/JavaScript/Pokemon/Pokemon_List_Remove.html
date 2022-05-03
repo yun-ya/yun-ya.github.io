@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+
+<body>
+    <h1>寶可夢圖鑑</h1>
+    <button id='addone'>增加</button>
+    <button id='removeone'>移除</button>
+    <button id='loadall'>Load All</button>
+    <div id="container"></div>
+    <script>
+
+        var index = 1;
+
+        $('#addone').click(function () {
+            let no = index.toString().padStart(3, '0');
+            $("#container").append(`<img src = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${no}.png'/>`);
+            index++;
+        });
+        $('#removeone').click(function () {
+            $('img').last().remove();
+            index--;
+        });
+        $('#loadall').click(
+            function () {
+                for (let i = 1; i <= 890; i++) {
+                    let fileName = i.toString().padStart(3, '0');
+                    var pathName = `<img src = 'https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${fileName}.png'/>`;
+                    console.log(pathName)
+
+
+                    $("#container").append(pathName);
+                }
+                $(document).on('click', 'img', function (event) {
+                    $('img').first().remove();
+                });
+            })
+
+    </script>
+</body>
+
+</html>

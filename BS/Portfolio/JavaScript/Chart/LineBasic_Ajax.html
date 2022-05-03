@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+    <!-- Bootstrap CSS -->
+
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.bundle.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="myChart" width="400" height="400"></canvas>
+    <script>     var ctx = document.getElementById("myChart");
+        $.ajax({
+            type: "GET",
+            url: "https://raw.githubusercontent.com/apprunner/FileStorage/master/Temperature.json",
+            dataType:'JSON',
+            success: function (response) {
+            var chart = new Chart(ctx, {
+            type: "line",
+            data: {
+                labels:  response.Label,
+                datasets: [{
+                    label: response.City,
+                    data: response.Data,
+                    fill: false,
+                    backgroundColor: 'rgba(255,165,0,0.3)',
+                    borderColor: 'rgb(255,165,0)',
+                    pointStyle: "circle",
+                    pointBackgroundColor: 'rgb(0,255,0)',
+                    pointRadius: 5,
+                    pointHoverRadius: 10,
+                }]
+            },
+            options: {
+                responsive: true,
+                title: {
+                    display: true,
+                    fontsize: 26,
+                    text: '1-6月氣溫平均值'
+                },
+                tooltips: {
+                    mode: 'point',
+                    intersect: true,
+                },
+                legend: {
+                    position: 'bottom',
+                    lables: {
+                        fontcolor: 'black',
+                    }
+                }
+            }
+        });     
+            },
+            error: function (response) {
+                console.log('錯誤');
+            }
+        });
+    </script>
+
+</body>
+
+</html>

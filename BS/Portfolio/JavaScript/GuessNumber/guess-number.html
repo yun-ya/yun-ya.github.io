@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <!--<link rel="icon" href="../../favicon.ico">-->
+
+  <title>Guess number</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="stylesheets/bootstrap.min.css" rel="stylesheet">
+
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!--<link href="../../assets/css/ie10-viewport-bug-workaround.css" rel="stylesheet">-->
+
+  <!-- Custom styles for this template -->
+  <link href="stylesheets/dashboard.css" rel="stylesheet">
+
+  <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+  <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+  <!--<script src="../../assets/js/ie-emulation-modes-warning.js"></script>-->
+
+  <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+  <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+</head>
+
+<body>
+
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+          aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">Project name</a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#">Dashboard</a></li>
+          <li><a href="#">Settings</a></li>
+          <li><a href="#">Profile</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+        <form class="navbar-form navbar-right">
+          <input type="text" class="form-control" placeholder="Search...">
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-3 col-md-2 sidebar">
+        <ul class="nav nav-sidebar">
+          <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">Reports</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Export</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="">Nav item</a></li>
+          <li><a href="">Nav item again</a></li>
+          <li><a href="">One more nav</a></li>
+          <li><a href="">Another nav item</a></li>
+          <li><a href="">More navigation</a></li>
+        </ul>
+        <ul class="nav nav-sidebar">
+          <li><a href="">Nav item again</a></li>
+          <li><a href="">One more nav</a></li>
+          <li><a href="">Another nav item</a></li>
+        </ul>
+      </div>
+      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="btn-group btn-group-justified">
+                <a id="start" type="button" class="btn btn-default" onclick="startGame()">開始</a>
+                <a id="restart" type="button" class="btn btn-default" onclick="abortGame()">放棄重來</a>
+                <a id="cheat" type="button" class="btn btn-default" onclick="showGame()">看答案</a>
+              </div>
+              <br>
+              <ul id="guessResults" class="list-group">
+               
+              </ul>
+              <div class="input-group">
+                <span class="input-group-addon" id="sizing-addon1">猜答案</span>
+                <input id="userGuess" type="text" name="" class="form-control" value="" required="required">
+                <span class="input-group-btn">
+                  <a id="guess" type="button" class="btn btn-default" onclick="doGuess()">猜!</a>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!--<script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>-->
+  <script src="scripts/bootstrap.min.js"></script>
+  <!-- Just to make our placeholder images work. Don't actually copy the next line! -->
+  <!--<script src="../../assets/js/vendor/holder.min.js"></script>-->
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <!--<script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>-->
+
+
+  <script>
+    var ul = document.getElementById('guessResults');
+    var inputElement = document.getElementById('userGuess');
+    var ranarray;
+    var A = 0;
+    var B = 0;
+
+
+    //開始
+    function startGame() {
+      ul.innerHTML = (" ");
+      ranarray = [];
+      A = 0;
+      B = 0;
+      for (let i = 0; i < 4; i++) {
+        ranarray[i] = Math.floor(Math.random() * 10);
+        for (let j = 0; j < i; j++) {
+          if (ranarray[i] == ranarray[j]) {
+            i--;
+            break;
+          }
+        }
+      }
+      console.log(ranarray);
+    }
+
+
+    // 放棄重來
+    function abortGame() {
+      if (ranarray == null) {
+        alert('還沒開始，不能放棄喔!')
+      }
+      else {
+        let str = " ";
+        ranarray.forEach(num => {
+          str += num;
+        });
+        alert(`答案是${str}`);
+        ul.innerHTML = (" ");
+        A = 0;
+        B = 0;
+        ranarray = [];
+        for (let i = 0; i < 4; i++) {
+          ranarray[i] = Math.floor(Math.random() * 9);
+          for (let j = 0; j < i; j++) {
+            if (ranarray[i] == ranarray[j]) {
+              i--;
+              break;
+            }
+          }
+        }
+      }
+
+    }
+
+
+    // 看答案
+    function showGame() {
+      if (ranarray == null) {
+        alert('還沒開始，不會有答案喔!')
+      }
+      else {
+        let str = " ";
+        ranarray.forEach(num => {
+          str += num;
+        });
+        alert(`答案是${str}`);
+      }
+    }
+
+    function doGuess() {
+      let x = inputElement.value;
+      let strinput = x.split("");
+      A = 0;
+      B = 0;
+      if (ranarray == null) {
+        alert('無亂數產生喔!\n請按"開始"進行遊戲喔!');
+      }
+      else {
+        if (inputElement.value.length == 4) {
+          let input = [];
+          for (let i = 0; i < strinput.length; i++) {
+            input.push(parseInt(strinput[i]));
+          }
+          console.log(input);
+          if (input[0] == input[1] || input[0] == input[2] || input[0] == input[3]
+            || input[1] == input[2] || input[1] == input[3] || input[2] == input[3]) {
+            alert('不能重複數字');
+            input = [];
+            console.log(input);
+          }
+          else {
+            //length等於count,filter驗之元素所構成的新陣列
+            let intersect = ranarray.filter(value => -1 != input.indexOf(value));
+            let total = intersect.length;
+            for (let i = 0; i < ranarray.length; i++) {
+              if (ranarray[i] == input[i]) {
+                A += 1;
+              }
+            }
+            B = total - A;
+            if (A == 4) {
+              //<!--<span class="badge badge-success">4A0B</span>-->
+              ul.innerHTML += `<li class="list-group-item">
+                  <span class="label label-success">${A}A${B}B</span>
+                  ${x}
+                </li>`;
+            }
+            else {
+              // <!--<span class="badge">2A0B</span>-->
+              ul.innerHTML += `<li class="list-group-item">
+                  <span class="label label-danger">${A}A${B}B</span>
+                  ${x}
+                </li>`;
+            }
+          }
+        }
+        else {
+          alert('長度不對請重新輸入');
+        }
+        inputElement.value = null;
+      }
+    }
+
+    document.getElementById("userGuess").onkeyup = function(event){
+      if(event.keyCode == 13){
+        doGuess();
+      }
+    }
+
+  </script>
+</body>
+
+</html>

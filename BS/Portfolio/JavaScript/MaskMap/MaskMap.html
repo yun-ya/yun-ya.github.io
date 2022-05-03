@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.js"
+        integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="../Modules/MyHelper.js"></script>
+    <title>Mask Map</title>
+    <style>
+        /* Always set the map height explicitly to define the size of the div
+         * element that contains the map. */
+        #map {
+            height: 100%;
+        }
+
+        /* Optional: Makes the sample page fill the window. */
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Mask　Map</h1>
+    <div id="msg"></div>
+    <div id="map"></div>
+    <script>
+        let msg = $g('msg')
+        var map;
+        var mask = [];
+        function initMap() {
+            var location = { lat: 24.7571306, lng: 120.9522639 };
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: location,
+                zoom: 12
+            });
+            infoWindow =new google.maps.InfoWindow;
+           
+            ajaxfun();
+
+        }
+        function ajaxfun(){
+            $.ajax({
+                type: "GET",
+                url: "https://findmasks.herokuapp.com/places",
+                success: function (response) {
+                    response.features.forEach((item) => {
+                        let obj = { coordinates: item.geometry.coordinates, masksLeft: item.properties.masksLeft };
+                        mask.push(obj);
+                    });
+                    for (var i = 0; i < mask.length; i++) {
+                        // console.log(mask[i].coordinates[0]);
+                        //lat緯度, lng經度
+                        var position = new google.maps.LatLng(mask[i].coordinates[1], mask[i].coordinates[0]);
+                        var makleft = mask[i].masksLeft;
+                        if (mask[i].masksLeft == 0) {
+                            var url = 'cry.png' }
+                            else{url = 'smile.png'}
+
+                            var mark = new google.maps.Marker({
+                                position: position,
+                                map: map,
+                                icon: {
+                                    url: url,
+                                    scaledSize: new google.maps.Size(25, 25)
+                                }
+                            });
+                       
+                    };
+                    // console.log(mask);
+                },
+                error: function (response) {
+                    console.log('錯誤');
+                }
+            });
+        }
+
+
+    </script>
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDTdrV4YDP3StZkp7uc5E3ecs2_9stHWBw&callback=initMap"
+        async defer></script>
+</body>
+
+</html>

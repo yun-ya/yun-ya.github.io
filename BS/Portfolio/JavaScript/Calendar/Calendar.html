@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>行事曆</title>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="../modules/MyHelper.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+  <script src="https://kit.fontawesome.com/0cd05a5fa8.js" crossorigin="anonymous"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    #prev {
+      position: absolute;
+      left: 0;
+      top: 20px;
+      font-size: 30px;
+    }
+
+    #next {
+      position: absolute;
+      right: 0;
+      top: 20px;
+      font-size: 30px;
+    }
+
+    .calendar {
+      /* border: 2px solid #a8a8a8; */
+      width: 950px;
+      height: 800px;
+      background: #fff;
+      /* box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1); */
+      text-align: center;
+      margin: auto;
+      position: relative;
+
+    }
+
+    #calendar-year {
+      margin: 0;
+    }
+
+    .body-list ul {
+      width: 100%;
+      font-family: arial;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    .body-list ul li {
+      width: 14.28%;
+      height: 36px;
+      line-height: 36px;
+      list-style-type: none;
+      display: block;
+      box-sizing: border-box;
+      float: left;
+      text-align: center;
+
+    }
+
+    .body-list #days li {
+      width: 14.28%;
+      height: 120px;
+      line-height: 36px;
+      list-style-type: none;
+      display: block;
+      box-sizing: border-box;
+      float: left;
+      text-align: center;
+      overflow: scr
+    }
+
+    #createitem {
+      position: absolute;
+      right: 100px;
+      top: 20px;
+      font-size: 20px;
+    }
+
+    .lightgrey {
+      color: #a8a8a8;
+    }
+
+    .darkgrey {
+      color: #565656;
+    }
+
+    .bule {
+      color: #49dad2;
+    }
+
+    .bulebox {
+      border: 1px solid #38a6e6;
+      background: #e9f8df;
+
+    }
+
+    .bor {
+      border: 1px solid #a8a8a8;
+
+    }
+
+    #message {
+      height: 120px;
+    }
+
+    ul li span {
+      display: block;
+      margin-bottom: 0;
+    }
+
+    ul li div::-webkit-scrollbar {
+      width: 15px;
+    }
+
+    ul li div::-webkit-scrollbar-track {
+      background-color: #3299ac;
+    }
+
+    /* the new scrollbar will have a flat appearance with the set background color */
+
+    ul li div::-webkit-scrollbar-thumb {
+      background-color: rgba(69, 129, 114, 0.774);
+    }
+
+    /* this will style the thumb, ignoring the track */
+
+    ul li div::-webkit-scrollbar-button {
+      background-color: #31d2ee;
+    }
+
+    /* optionally, you can style the top and the bottom buttons (left and right for horizontal bars) */
+
+    ul li div::-webkit-scrollbar-corner {
+      background-color: black;
+    }
+
+    ul li div {
+      height: 84px;
+      width: 100%;
+      overflow: auto;
+    }
+
+    p {
+      color: black;
+      font-size: 14px;
+      margin: 0;
+      cursor: pointer;
+      line-height: 25px;
+      white-space: nowrap;
+      /* 死都不換行 */
+    }
+
+    #color_sel,
+    #newcolor_sel {
+      width: 60px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="calendar">
+    <div class="title">
+      <h1 class="bule" id="calendar-year">year</h1>
+      <h2 class="bule" id="calendar-month">month</h2>
+      <button id="createitem" type="button" class="btn btn-info" data-toggle="modal"
+        data-target="#eventModal">+新增事件</button>
+      <a href="" class="lightgrey" id="prev"><i class="fas fa-angle-left"></i></a>
+      <a href="" class="lightgrey" id="next"><i class="fas fa-angle-right"></i></a>
+    </div>
+
+    <div class="body">
+      <div class="lightgrey body-list">
+        <ul>
+          <li>SUN</li>
+          <li>MON</li>
+          <li>TUE</li>
+          <li>WED</li>
+          <li>THU</li>
+          <li>FRI</li>
+          <li>SAT</li>
+        </ul>
+      </div>
+      <div class="darkgrey body-list">
+        <ul id="days">
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">新增事件</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="Date">日期:</label>
+                <input id="indate" type="date" class="form-control">
+              </div>
+              <div class="form-group col-md-6">
+                <label for="Time">時間</label>
+                <input id="intime" type="time" class="form-control" value="12:00">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="color_sel">顏色</label>
+              <input type="color" id="color_sel" name="color_sel" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="message" class="col-form-label">活動</label>
+              <textarea class="form-control" id="message" placeholder="新事件"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="save">儲存</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" id="chel">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="changeModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">事件更動</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-group">
+              <div class="form-row">
+                <div class="form-group col-md-6">
+                  <label for="Date">日期:</label>
+                  <input id="newdate" type="date" class="form-control">
+                </div>
+                <div class="form-group col-md-6">
+                  <label for="Time">時間</label>
+                  <input id="newtime" type="time" class="form-control" value="12:00">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="color_sel">顏色</label>
+              <input type="color" id="newcolor_sel" name="color_sel" class="form-control">
+            </div>
+            <div class="form-group">
+              <label for="message" class="col-form-label">事件</label>
+              <textarea class="form-control" id="newmessage"></textarea>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" id="update">修改</button>
+          <button type="button" class="btn btn-primary" id="delete">刪除</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">取消</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var montharray = ["January", "Febrary", "March", "April", "May", "June", "July", "Auguest", "September", "October", "November", "December"]
+    var days = document.getElementById('days');
+    var prev = document.getElementById('prev');
+    var next = document.getElementById('next');
+    var cyear = document.getElementById('calendar-year');
+    var cmonth = document.getElementById('calendar-month');
+    const save = document.getElementById('save');
+
+    var mydate = new Date();
+    var year = mydate.getFullYear();
+    var month = mydate.getMonth();
+    var day = mydate.getDate();
+    var arrayJson = [];
+    function daystart(year, month) {
+      let day = new Date(year, month, 1);
+      return (day.getDay());
+    }
+
+    function refrshdate() {
+
+      var totalday = new Date(year, month + 1, 0).getDate()
+      var firstDay = daystart(year, month);
+      var style = "";
+      var li = ''
+      for (var i = 1; i <= firstDay; i++) {
+        li += '<li class = bor></li>'
+      }
+      for (let i = 1; i <= totalday; i++) {
+
+        if ((i < day && year == mydate.getFullYear() && month == mydate.getMonth()) || year < mydate.getFullYear() || (year == mydate.getFullYear() && month < mydate.getMonth())) {
+          style = "class = 'lightgrey bor'";
+        }
+        else if (i == day && year == mydate.getFullYear() && month == mydate.getMonth()) {
+          style = "class = 'bulebox bule'"
+        }
+        else {
+          style = " class='darkgrey bor'"
+        }
+        li += `<li id='calendar-date'${style}><span>${i}</span><div></div></li>`;
+      }
+      days.innerHTML = li;
+      cmonth.innerHTML = montharray[month];
+      cyear.innerHTML = year;
+      createlist();
+      changeEvent();
+    }
+
+    prev.onclick = function (e) {
+      e.preventDefault();
+      month--;
+      if (month < 0) {
+        year--;
+        month = 11;
+      }
+      refrshdate();
+    }
+    next.onclick = function (e) {
+      e.preventDefault();
+      month++;
+      if (month > 11) {
+        year++;
+        month = 0;
+      }
+      refrshdate();
+    }
+
+    save.onclick = function (e) {
+      e.preventDefault();
+      let indate = $('#indate').val();
+      const intime = $('#intime').val();
+      const message = $('#message').val();
+      const color = $('#color_sel').val();
+      if (indate == '' || intime == '' || message == '' || color == '') {
+        alert('請確認有無填寫錯誤')
+      }
+      else {
+        var object = { Day: indate, Time: intime, Message: message, Color: color }
+        arrayJson.push(object);
+        localStorage.setItem('item', JSON.stringify(arrayJson))
+
+        // document.getElementById('intime').value = "";
+        document.getElementById('message').value = "";
+        refrshdate();
+      }
+    }
+
+
+    function createlist() {
+      // console.log(arrayJson)
+      // document.getElementById('indate').value = new Date();
+      if (arrayJson.length != 0) {
+        arrayJson.forEach((item, index) => {
+          let p = document.createElement('p');
+          indate = new Date(item.Day);
+
+          if (indate.getFullYear() == year && indate.getMonth() == month) {
+            let firstDate = new Date(indate.valueOf());
+            firstDate.setDate(1);//頁面上第一天
+            let r = indate.getDate() + firstDate.getDay() - 1;
+            // console.log(r);
+            p.innerHTML = item.Time + ' ' + item.Message;
+            p.style.color = item.Color;
+            p.setAttribute('data-index', index++)
+            $('#days li').eq(r).children('div').append(p);
+          }
+        });
+      }
+
+    }
+
+    function changeEvent() {
+      $('p').on('click', function () {
+        $('#changeModal').modal('show');
+        console.log(this.textContent);
+        //attr = get setAttribute
+        pindex = $(this).attr('data-index')
+        console.log(pindex)
+
+      })
+
+    }
+    var pindex = undefined;
+
+    $('#delete').click(function () {
+      arrayJson.splice(pindex, 1);
+      localStorage.setItem('item', JSON.stringify(arrayJson));
+      $('#changeModal').modal('hide');
+      refrshdate();
+    })
+    $('#update').click(function () {
+      var newdate = $('#newdate').val();
+      var newtime = $('#newtime').val();
+      var newmessage = $('#newmessage').val();
+      var newcolor = $('#newcolor_sel').val();
+      if (newdate == '' || newtime == '' || newmessage == '' || newcolor == '') {
+        alert('請確認有無填寫錯誤')
+      }
+      else {
+        var newobject = { Day: newdate, Time: newtime, Message: newmessage, Color: newcolor }
+        arrayJson.splice(pindex, 1, newobject);
+        localStorage.setItem('item', JSON.stringify(arrayJson));
+        $('#changeModal').modal('hide');
+        refrshdate();
+      }
+
+    })
+
+    window.onload = () => {
+      refrshdate();
+    }
+
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <title>終極密碼</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .wrap {
+      width: 960px;
+      margin: auto;
+      text-align: center;
+    }
+
+    #number {
+      border: 1px solid black;
+      border-radius: 10px;
+      width: 960px;
+      height: 200px;
+      margin: auto;
+      margin-top: 20px;
+      font-size: 80px;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+    }
+
+    .user-guess {
+      margin-top: 100px;
+      width: 100%;
+      height: 100%;
+      font-size: 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #start {
+      background-color: rgb(157, 72, 236);
+      border: 1px solid black;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      font-size: 20px;
+      color: white;
+      width: 50%;
+      height: 60px;
+      
+    }
+
+    .row {
+      justify-content: center;
+      align-items: center;
+      padding-top: 10px;
+    }
+
+    #btn {
+      width:60px;
+      height: 60px;
+      border-radius: 5px;
+      background-color: black;
+      color: white;
+      border: 1px solid black;
+      margin-bottom: 4px;
+      margin-left: 2px;
+    }
+
+    #input {
+      width: 50%;
+      height: 50px;
+      border: 1px solid black;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div id="number">
+      <p id="min"></p>
+      <p>~</p>
+      <p id="max"></p>
+    </div>
+    <div class="user-guess">
+      <button id="start" onclick="startRan()">產生亂數</button>
+      <div id="input"></div>
+      <div class="container">
+        <div class="row">
+          <div class="col-5 col-md-3">
+            <button id="btn" onclick="getNum(this)">1</button>
+            <button id="btn" onclick="getNum(this)">2</button>
+            <button id="btn" onclick="getNum(this)">3</button>
+            <button id="btn" onclick="getNum(this)">4</button>
+            <button id="btn" onclick="getNum(this)">5</button>
+            <button id="btn" onclick="getNum(this)">6</button>
+            <button id="btn" onclick="getNum(this)">7</button>
+            <button id="btn" onclick="getNum(this)">8</button>
+            <button id="btn" onclick="getNum(this)">9</button>
+            <button id="btn" onclick="clearNum()" style="color: red;">X</button>
+            <button id="btn" onclick="getNum(this)">0</button>
+            <button id="btn" onclick="check()" style="color: green;">∨</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var body = document.getElementsByTagName('body')[0];
+    var min = document.getElementById('min');
+    var max = document.getElementById('max');
+    var ran;
+    var input = document.getElementById('input');
+    var start = document.getElementById('start');
+    var finnum;
+    min.innerHTML = 0;
+    max.innerHTML = 100;
+    var gumin = 0;
+    var gumax = 100;
+    function startRan() {
+      ran = Math.floor(Math.random() * 100);
+      console.log(`ran：${ran}`);
+    }
+    var btn = document.querySelectorAll('btn');
+    
+    function getNum(el) {
+      if (ran == null) {
+        input.innerText = (" ");
+        alert('請按產生亂數!\n再次進行遊戲喔!')
+      }
+      else {
+        btn.forEach((item) => {
+          item.addEventListener('click', displayEvent);
+        })
+        input.append(el.innerHTML);
+
+      }
+    }
+    function check() {
+
+      inputnum = parseInt(input.innerText);
+      if (inputnum > gumax) {
+        alert(`數字不能超過${gumax}`);
+        input.innerText = (" ");
+      }
+      else if (inputnum < gumin) {
+        alert(`數字不能小於${gumin}`);
+        input.innerText = (" ");
+
+      }
+      else {
+        if (ran == inputnum) {
+          alert(`你猜對囉!\n答案是${inputnum}`);
+          gumin = 0; gumax = 100;
+          min.innerHTML = gumin;
+          max.innerHTML = gumax;
+          ran = null;
+          input.innerText = (" ");
+        }
+        else if (inputnum > ran) {
+          if (inputnum < gumax) {
+            gumax = inputnum;
+            input.innerText = (" ");
+          }
+          max.innerHTML = gumax;
+        }
+        else {
+          if (inputnum > gumin) {
+            gumin = inputnum;
+            input.innerText = (" ");
+          }
+          min.innerHTML = gumin;
+        }
+
+        console.log(`check：${inputnum}`);
+      }
+    }
+    function clearNum(){
+      input.innerText = (" ");
+    }
+
+  </script>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            text-align: center;
+        }
+
+        #showPuzzle {
+            position: relative;
+            cursor: pointer;
+            margin: auto;
+
+        }
+
+        #puzzleImg {
+            display: none;
+            padding-top: 40%;
+            width: 500px;
+            height: 500px;
+
+        }
+
+        div[id*="item"] {
+            position: absolute;
+            /* overflow: hidden; */
+            background-repeat: no-repeat;
+            z-index: 50;
+        }
+
+        #btn {
+            width: 100px;
+            height: 25px;
+        }
+
+        #puzzleImg {
+            z-index: -1;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>拼圖遊戲</h1>
+    <button id="btn">go</button>
+    <div id="showPuzzle"></div>
+    <img src="https://img.599ku.com/element_pic/15/84/28/0/1bada83d8937c36b9407158720ec1dea.jpg" id="puzzleImg" />
+
+    <script>
+        var array = [];
+        $("#btn").click(function () {
+            // 設定 X 及 Y 軸要切成幾塊
+            var puzzleX = 3,
+                puzzleY = 3;
+
+            var puzzleImg = $('#puzzleImg'),
+                puzzleImgSrc = puzzleImg.attr('src');
+
+            // 取得 #puzzleImg 圖片的寬高
+            var puzzleWidth = parseInt(puzzleImg.css('width'), 10),
+                puzzleHeight = parseInt(puzzleImg.css('height'), 10);
+
+            // 設定 #showPuzzle 的寬高
+            $('#showPuzzle').css({
+                width: puzzleWidth + 2,
+                height: puzzleHeight + 2,
+                border: '5px solid violet'
+            });
+
+            // 把 #puzzleImg 圖片的寬高除以要切的塊數
+            // 這樣能得到每一小塊圖片的寬高
+            var picW = Math.round(puzzleWidth / puzzleX),
+                picH = Math.round(puzzleHeight / puzzleY);
+
+            // 一一產生 X 及 Y 軸的圖片
+            for (var i = 0; i < puzzleX; i++) {
+                for (var j = 0; j < puzzleY; j++) {
+
+                    // 計算該區塊的背景圖片位置
+                    var _posLeft = Math.round(-i * picW) + 'px',
+                        _posTop = Math.round(-j * picH) + 'px';
+                    // 產生一個 span 區塊並指定其寬高、背景圖片
+                    if (i == 0 && j == 0) {
+                        var div = $(`<div class="pic" id="item-${i}-${j}" />`).css({
+                            width: picW - 1,
+                            height: picH - 1,
+                            left: i * picW + 1,
+                            top: j * picH + 1,
+                            // backgroundImage: 'url(' + puzzleImgSrc + ')',
+                            backgroundPosition: _posLeft + ' ' + _posTop
+                        })
+                    }
+                    else {
+                        div = $(`<div class="pic" id="item-${i}-${j}" />`).css({
+                            width: picW - 1,
+                            height: picH - 1,
+                            left: i * picW + 1,
+                            top: j * picH + 1,
+                            backgroundImage: 'url(' + puzzleImgSrc + ')',
+                            backgroundPosition: _posLeft + ' ' + _posTop
+                        })
+                    }
+                    // 把 div 加到 #showPuzzle 中
+                    $('#showPuzzle').append(div);
+
+                }
+            }
+            $('#showPuzzle div').each(function () {
+                // console.log($(this).attr('id'));
+                array.push($(this).attr('id'));
+            })
+            // console.log(array);
+            var x = 1;
+            var dirs = [[1,0] ,[-1,0] ,[0,-1] ,[0,1]];
+            $('div[id*="item"] ').click(function () {
+                var id = $(this).attr('id');
+                // id.replace('0', x)
+                let currentBlock = id.split('-').splice(1 ,2).map(x => Number(x));
+                // console.log(currentBlock);
+                //filter會回傳一個陣列，其條件是 return 後方為 true 的物件
+                let canMoves = dirs.filter(dir =>{
+                    let x = currentBlock[0] + dir[0];
+                    let y = currentBlock[1] + dir[1];
+                    let div = document.querySelector(`#item-${x}-${y}`);
+                    if(div && !div.style.backgroundImage)
+                    {
+                        return div;
+                    } 
+                    
+                }).map( dir => {//map() 時他需要回傳一個值，他會透過函式內所回傳的值組合成一個陣列，回傳數量等於原始陣列的長度
+                    let x = currentBlock[0] + dir[0];
+                    let y = currentBlock[1] + dir[1];
+
+                    return document.querySelector(`#item-${x}-${y}`);
+                });
+                console.log(canMoves);
+                if(canMoves != []){
+                    
+                }
+
+            })
+        })
+
+    </script>
+</body>
+
+</html>

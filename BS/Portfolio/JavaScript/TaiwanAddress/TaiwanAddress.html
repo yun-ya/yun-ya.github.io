@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>taiwan</h1>
+    <div id="msg"></div>
+    <table>
+        <thead>
+        </thead>
+        <tbody>
+        </tbody>
+        <template id="templateTitle">
+            <tr>
+                <th>城市</th>
+                <th>區域</th>
+                <th>區碼</th>
+
+            </tr>
+        </template>
+        <template id="templateRow">
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+        </template>
+    </table>
+
+    <script src="../modules/MyHelper.js"></script>
+    <script>
+        window.onload = function () {
+            let xhr = new XMLHttpRequest;
+            xhr.onload = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    zipCodeArray = JSON.parse(this.responseText);
+                    console.log(this.responseText)
+                    let zipCode = [];
+                    zipCodeArray.forEach((item) => {
+                        let obj = { City: item.CityName, District: [] }
+                        item.AreaList.forEach((area) => {
+                            obj.District.push({ District: area.AreaName, ZipCode: area.ZipCode });
+                        });
+                        zipCode.push(obj);
+
+                    });
+                    console.log(Object.keys(zipCode[0]));
+                    const titlesArray = Object.keys(zipCode[0]);
+                    addThead(titlesArray);
+                    zipCode.forEach((item) => {
+
+                        // console.log(Object.values(item))
+                        addTbody(Object.values(item))
+                        // document.getElementById("msg").innerHTML +=Object.values(item);
+                        
+                    });
+                    
+                } else {
+                    msg.textContent = '發生錯誤，HTTP response代碼：' + xhr.status;
+                }
+
+            }
+            xhr.open("GET", "https://raw.githubusercontent.com/yun-ya/HomeWork01/master/AllData.json");
+            xhr.send();
+        }
+        // let body = document.querySelector('body');
+        let body = $g('body');
+        // let table = document.createElement('table');
+        let table = $c('table');
+        table.setAttribute("border", "2");
+        let thead = $c('thead');
+        let tbody = $c('tbody');
+        table.appendChild(thead);
+        table.appendChild(tbody);
+        body.appendChild(table);
+
+        function addThead() {
+            //取得樣板
+            let templateTitle = $g('#templateTitle');
+            let cloneContent = templateRow.content.cloneNode(true);
+            thead.appendChild(templateTitle.content)
+        }
+
+        function addTbody(rowArray) {
+            let templateRow = $g('#templateRow');
+            
+            // console.log(rowArray[1]);
+
+
+            rowArray[1].forEach((item) =>{
+                let cloneContent = templateRow.content.cloneNode(true);
+            let tds = cloneContent.querySelectorAll('td'); 
+            tds[0].textContent = rowArray[0];
+            tds[1].textContent = item.District;
+            tds[2].textContent = item.ZipCode;
+            tbody.appendChild(cloneContent);
+            })
+
+        }
+    </script>
+</body>
+
+</html>
